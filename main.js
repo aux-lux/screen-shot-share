@@ -17,7 +17,6 @@
 		var paste_event_support;
 		var pasteCatcher;
 
-		//handlers
 		document.addEventListener('keydown', function (e) {
 			_self.on_keyboard_action(e);
 		}, false); //firefox fix
@@ -26,9 +25,8 @@
 		}, false); //firefox fix
 		document.addEventListener('paste', function (e) {
 			_self.paste_auto(e);
-		}, false); //official paste handler
-
-		//constructor - we ignore security checks here
+		}, false);
+      
 		this.init = function () {
 			pasteCatcher = document.createElement("div");
 			pasteCatcher.setAttribute("id", "paste_ff");
@@ -40,17 +38,12 @@
 			var observer = new MutationObserver(function(mutations) {
 				mutations.forEach(function(mutation) {
 					if (paste_event_support === true || ctrl_pressed == false || mutation.type != 'childList'){
-						//we already got data in paste_auto()
 						return true;
 					}
-
-					//if paste handle failed - capture pasted object manually
 					if(mutation.addedNodes.length == 1) {
 						if (mutation.addedNodes[0].src != undefined) {
-							//image
 							_self.paste_createImage(mutation.addedNodes[0].src);
 						}
-						//register cleanup after some time.
 						setTimeout(function () {
 							pasteCatcher.innerHTML = '';
 						}, 20);
@@ -61,7 +54,7 @@
 			var config = { attributes: true, childList: true, characterData: true };
 			observer.observe(target, config);
 		}();
-		//default paste action
+      
 		this.paste_auto = function (e) {
 			paste_event_support = false;
 			if(pasteCatcher != undefined){
@@ -71,7 +64,6 @@
 				var items = e.clipboardData.items;
 				if (items) {
 					paste_event_support = true;
-					//access data directly
 					for (var i = 0; i < items.length; i++) {
 						if (items[i].type.indexOf("image") !== -1) {
 							//image
@@ -83,45 +75,34 @@
 					}
 					e.preventDefault();
 				}
-				else {
-					//wait for DOMSubtreeModified event
-					//https://bugzilla.mozilla.org/show_bug.cgi?id=891247
-				}
 			}
 		};
-		//on keyboard press
+      
 		this.on_keyboard_action = function (event) {
 			k = event.keyCode;
-			//ctrl
 			if (k == 17 || event.metaKey || event.ctrlKey) {
 				if (ctrl_pressed == false)
 					ctrl_pressed = true;
 			}
-			//v
 			if (k == 86) {
 				if (document.activeElement != undefined && document.activeElement.type == 'text') {
-					//let user paste into some input
 					return false;
 				}
-
 				if (ctrl_pressed == true && pasteCatcher != undefined){
 					pasteCatcher.focus();
 				}
 			}
 		};
-		//on kaybord release
+      
 		this.on_keyboardup_action = function (event) {
-			//ctrl
 			if (event.ctrlKey == false && ctrl_pressed == true) {
 				ctrl_pressed = false;
-			}
-			//command
-			else if(event.metaKey == false && command_pressed == true){
+			} else if(event.metaKey == false && command_pressed == true){
 				command_pressed = false;
 				ctrl_pressed = false;
 			}
 		};
-		//draw pasted image to canvas
+      
 		this.paste_createImage = function (source) {
 			document.getElementById('note').style.display = 'none';
 			image = new Image();
