@@ -4,4 +4,4 @@ RewriteEngine On
 RewriteCond %{HTTP_HOST} ^www.skry.pt$ [NC]
 RewriteRule ^(.*)$ http://skry.pt/$1 [R=301,L]
 
-RewriteRule ^([a-z]{5}\.[a-z]{3}) files/$1 [L]
+RewriteRule ^([a-z]{5})\.(jpe?g|gif|png) files/$1.$2 [L]
