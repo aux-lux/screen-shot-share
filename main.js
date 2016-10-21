@@ -177,7 +177,7 @@
 		
 		cctx.drawImage(canvas, dims.x, dims.y, dims.w, dims.h, 0, 0, dims.w, dims.h);
 		
-		var canvasData = cropped.toDataURL("image/jpeg", 0.8),
+		var canvasData = cropped.toDataURL(),
 			form = document.createElement('form'),
 			photo = document.createElement('input');
 		
