@@ -31,7 +31,7 @@ if ($size > 1024 * 1024) {
 } else if ($size > 1024) {
 	$strSize = round($size/1024*100)/100 . ' MB';
 }
-$proc = $size / 1024 / 512 * 100; // limit 1GB
+$proc = $size / 1024 / 512 * 100; // counting to 0.5GB
 if ($proc > 1) {
 	$proc = 1;
 }
