@@ -1,0 +1,7 @@
+Options -Indexes
+RewriteEngine On
+
+RewriteCond %{HTTP_HOST} ^www.skry.pt$ [NC]
+RewriteRule ^(.*)$ http://skry.pt/$1 [R=301,L]
+
+RewriteRule ^([a-z]{5}\.jpg) files/$1 [L]
