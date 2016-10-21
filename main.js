@@ -136,13 +136,12 @@
 			
 			
 			canvas.addEventListener('mousedown', function (e) {
-				sp = {x: e.clientX, y: e.clientY};
-				//drawCrop(sp.x, sp.y, sp.x, sp.y);
+				sp = {x: e.clientX + Math.max(document.documentElement.scrollLeft, document.body.scrollLeft), y: e.clientY + Math.max(document.documentElement.scrollTop, document.body.scrollTop)};
 				md = true;
 			});
 			canvas.addEventListener('mousemove', function (e) {
 				if (md) {
-					ep = {x: e.clientX, y: e.clientY};
+					ep = {x: e.clientX + Math.max(document.documentElement.scrollLeft, document.body.scrollLeft), y: e.clientY + Math.max(document.documentElement.scrollTop, document.body.scrollTop)};
 					drawCrop(sp.x, sp.y, ep.x, ep.y);
 					moved = true;
 				}
@@ -177,7 +176,7 @@
 		
 		cctx.drawImage(canvas, dims.x, dims.y, dims.w, dims.h, 0, 0, dims.w, dims.h);
 		
-		var canvasData = cropped.toDataURL(),
+		var canvasData = cropped.toDataURL("image/jpeg", 0.8),
 			form = document.createElement('form'),
 			photo = document.createElement('input');
 		
